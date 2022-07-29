@@ -1,12 +1,17 @@
-import 'antd/dist/antd.css';
 import {Button} from 'antd'
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { Register } from './pages/Register';
+import {Login} from './pages/Login'
 
 function App() {
   return (
-    <div className="App p-5">
-      <h1>Doctor Appointment</h1>
-      <Button type="primary">Primary Button</Button>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
+
+    </Routes>
+    </BrowserRouter>
   );
 }
 
