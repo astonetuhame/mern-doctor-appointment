@@ -20,7 +20,6 @@ function Register() {
       toast.error('Something went wrong')
       
     }
-    console.log('Received values from the form', values)
   }
 
   return (
