@@ -1,7 +1,7 @@
 import  {Form, Input, Button} from 'antd'
 import { Link } from 'react-router-dom'
 
-export const Login = () => {
+function Login () {
   
   const onFinish = (values) => {
     console.log('Received values from the form', values)
@@ -25,3 +25,5 @@ export const Login = () => {
     </div>
   )
 }
+
+export default Login

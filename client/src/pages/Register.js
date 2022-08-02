@@ -1,9 +1,25 @@
 import  {Form, Input, Button} from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from "axios"
+import toast from 'react-hot-toast'
 
-export const Register = () => {
-  
-  const onFinish = (values) => {
+function Register() {
+  const navigate = useNavigate()
+  const onFinish = async (values) => {
+    try {
+      const response = await axios.post('api/user/register', values)
+      if (response.data.success)
+      {
+        toast.success(response.data.message)
+        toast("Redirecting to login page")
+        navigate('/login')
+      } else{
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      toast.error('Something went wrong')
+      
+    }
     console.log('Received values from the form', values)
   }
 
@@ -28,3 +44,5 @@ export const Register = () => {
     </div>
   )
 }
+
+export default Register
