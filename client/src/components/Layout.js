@@ -1,12 +1,13 @@
 import "../layout.css";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Layout({ children }) {
-  const [collapsed, setCollapsed ] = useState(false);
-  const {user} = useSelector((state) => state.user)
+  const [collapsed, setCollapsed] = useState(false);
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
+  const navigate = useNavigate()
   const userMenu = [
     {
       name: "Home",
@@ -28,21 +29,39 @@ export default function Layout({ children }) {
       path: "/profile",
       icon: "ri-user-line",
     },
+  ];
+
+  const adminMenu = [
     {
-      name: "Logout",
-      path: "/logout",
-      icon: "ri-logout-box-line",
+      name: "Home",
+      path: "/",
+      icon: "ri-home-line",
+    },
+    {
+      name: "Users",
+      path: "/users",
+      icon: "ri-user-line",
+    },
+    {
+      name: "Doctors",
+      path: "/doctors",
+      icon: "ri-user-star-line",
+    },
+    {
+      name: "Profile",
+      path: "/profile",
+      icon: "ri-user-line",
     },
   ];
 
-  const menuToBeRendered = userMenu;
+  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
 
   return (
     <div className="main p-2">
       <div className="d-flex layout">
         <div className={`${collapsed ? "collapsed-sidebar" : "sidebar"}`}>
           <div className="sidebar-header">
-            <h1>DA</h1>
+            <h1 className="logo">DA</h1>
           </div>
           <div className="menu">
             {menuToBeRendered.map((menu) => {
@@ -58,6 +77,12 @@ export default function Layout({ children }) {
                 </div>
               );
             })}
+            <div
+              className={`d-flex menu-item`} onClick={()=>{localStorage.clear(); navigate('/login')}}
+            >
+              <i className='ri-logout-circle-line'></i>
+              {!collapsed && <Link to="/login">Logout</Link>}
+            </div>
           </div>
         </div>
         <div className="content">
@@ -74,8 +99,10 @@ export default function Layout({ children }) {
               ></i>
             )}
             <div className="d-flex align-items-center px-4">
-            <i className="ri-notification-line header-action-icon px-2"></i>
-            <Link className="anchor" to="/profile">{user?.name}</Link>
+              <i className="ri-notification-line header-action-icon px-2"></i>
+              <Link className="anchor" to="/profile">
+                {user?.name}
+              </Link>
             </div>
           </div>
           <div className="body">{children}</div>
